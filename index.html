@@ -30,14 +30,18 @@
     const name = document.getElementById("name").value;
     const mobile = document.getElementById("mobile").value;
 
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from("users")
       .insert([{ name, mobile }]);
 
-    document.getElementById("msg").innerText =
-      error ? error.message : "Data Saved Successfully ✅";
+    if (error) {
+      alert("ERROR: " + error.message);
+      console.log(error);
+    } else {
+      alert("SUCCESS");
+      console.log(data);
+    }
   }
 </script>
-
 </body>
 </html>
