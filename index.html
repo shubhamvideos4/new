@@ -7,21 +7,20 @@
 </head>
 <body>
 
-<h2>Save Data to Supabase</h2>
+<h2>Save Data</h2>
 
 <input id="name" placeholder="Name"><br><br>
 <input id="mobile" placeholder="Mobile"><br><br>
 
 <button onclick="saveData()">Save</button>
 
-<p id="msg"></p>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  const SUPABASE_URL = "PASTE_PROJECT_URL_HERE";
-  const SUPABASE_KEY = "PASTE_ANON_KEY_HERE";
+  const SUPABASE_URL = "PASTE_PROJECT_URL";
+  const SUPABASE_KEY = "PASTE_ANON_KEY";
 
-  const supabase = supabase.createClient(
+  // ⚠️ IMPORTANT FIX
+  const sb = supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
   );
@@ -30,18 +29,17 @@
     const name = document.getElementById("name").value;
     const mobile = document.getElementById("mobile").value;
 
-    const { data, error } = await supabase
+    const { error } = await sb
       .from("users")
-      .insert([{ name, mobile }]);
+      .insert([{ name: name, mobile: mobile }]);
 
     if (error) {
       alert("ERROR: " + error.message);
-      console.log(error);
     } else {
-      alert("SUCCESS");
-      console.log(data);
+      alert("Data Saved ✅");
     }
   }
 </script>
+
 </body>
 </html>
