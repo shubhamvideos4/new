@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Supabase Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<h2>Save Data to Supabase</h2>
+
+<input id="name" placeholder="Name"><br><br>
+<input id="mobile" placeholder="Mobile"><br><br>
+
+<button onclick="saveData()">Save</button>
+
+<p id="msg"></p>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = "PASTE_PROJECT_URL_HERE";
+  const SUPABASE_KEY = "PASTE_ANON_KEY_HERE";
+
+  const supabase = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+  async function saveData() {
+    const name = document.getElementById("name").value;
+    const mobile = document.getElementById("mobile").value;
+
+    const { error } = await supabase
+      .from("users")
+      .insert([{ name, mobile }]);
+
+    document.getElementById("msg").innerText =
+      error ? error.message : "Data Saved Successfully ✅";
+  }
+</script>
+
+</body>
+</html>
