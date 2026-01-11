@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Supabase Test</title>
+  <title>Supabase Users Test</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: Arial;
       padding: 20px;
     }
     input, button {
@@ -17,48 +17,46 @@
       font-size: 16px;
     }
     button {
-      background: #4CAF50;
+      background: #2196F3;
       color: white;
       border: none;
-      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-<h2>Save Name to Supabase</h2>
+<h2>Save User Name</h2>
 
-<input id="name" type="text" placeholder="Enter name">
+<input id="name" placeholder="Enter name">
 <button onclick="saveData()">Save</button>
 
 <p id="msg"></p>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  // ✅ YOUR SUPABASE DETAILS
   const SUPABASE_URL = "https://zmatzumlwmrbyhxoklri.supabase.co";
   const SUPABASE_KEY = "sb_publishable_OMvn9FpZkZPNoEkvaZLmyQ_gB7mlbzc";
 
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   async function saveData() {
-    const nameValue = document.getElementById("name").value;
+    const name = document.getElementById("name").value;
 
-    if (!nameValue) {
+    if (!name) {
       alert("Name required");
       return;
     }
 
     const { error } = await sb
-      .from("user")
-      .insert([{ name: nameValue }]);
+      .from("users")
+      .insert([{ name }]);
 
     if (error) {
       document.getElementById("msg").innerText =
         "Error: " + error.message;
     } else {
       document.getElementById("msg").innerText =
-        "Data Saved Successfully ✅";
+        "Data Saved ✅";
       document.getElementById("name").value = "";
     }
   }
