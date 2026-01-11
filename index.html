@@ -1,46 +1,22 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>Supabase Test</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
 <body>
 
-<h2>Save Data</h2>
-
-<input id="name" placeholder="Name"><br><br>
-<input id="mobile" placeholder="Mobile"><br><br>
-
-<button onclick="saveData()">Save</button>
+<button onclick="test()">TEST INSERT</button>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  window.onerror = function(msg, url, line) {
-    alert("JS ERROR: " + msg + " line:" + line);
-  };
-  const SUPABASE_URL = "PASTE_PROJECT_URL";
-  const SUPABASE_KEY = "PASTE_ANON_KEY";
-alert(typeof supabase);
-  // ⚠️ IMPORTANT FIX
   const sb = supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
+    "PASTE_PROJECT_URL",
+    "PASTE_ANON_KEY"
   );
 
-  async function saveData() {
-    const name = document.getElementById("name").value;
-    const mobile = document.getElementById("mobile").value;
-
+  async function test() {
     const { error } = await sb
       .from("user")
-      .insert([{ name: "test" }]);
+      .insert([{ name: "Shubham" }]);
 
-    if (error) {
-      alert("ERROR: " + error.message);
-    } else {
-      alert("Data Saved ✅");
-    }
+    alert(error ? error.message : "DATA SAVED ✅");
   }
 </script>
 
