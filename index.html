@@ -33,8 +33,8 @@ alert(typeof supabase);
     const mobile = document.getElementById("mobile").value;
 
     const { error } = await sb
-      .from("users")
-      .insert([{ name: name, mobile: mobile }]);
+      .from("user")
+      .insert([{ name: "test" }]);
 
     if (error) {
       alert("ERROR: " + error.message);
