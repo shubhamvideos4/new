@@ -1,65 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Supabase Users Test</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: Arial;
-      padding: 20px;
-    }
-    input, button {
-      width: 100%;
-      max-width: 300px;
-      padding: 10px;
-      margin-top: 10px;
-      font-size: 16px;
-    }
-    button {
-      background: #2196F3;
-      color: white;
-      border: none;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Select Worker</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{
+  height:100%;
+  font-family:'Segoe UI',Tahoma,Verdana,sans-serif;
+}
+
+/* 🌈 Background */
+body{
+  background:linear-gradient(270deg,#ff416c,#ff4b2b,#ff6a00,#fcd800,#0ff0b3,#2196f3,#9c27b0);
+  background-size:1400% 1400%;
+  animation:rainbow 15s ease infinite;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:16px;
+  overflow:hidden;
+}
+@keyframes rainbow{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* 💎 Main container (Android-like) */
+.box{
+  width:100%;
+  max-width:820px;      /* 🔻 reduced */
+  min-height:78vh;      /* 🔻 reduced */
+  padding:26px;         /* 🔻 reduced */
+  background:rgba(255,255,255,0.15);
+  backdrop-filter:blur(14px);
+  border-radius:18px;
+  color:#fff;
+  box-shadow:0 8px 28px rgba(0,0,0,.3);
+  display:flex;
+  flex-direction:column;
+  animation:fadeIn 0.8s ease;
+}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(-15px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+h2{
+  text-align:center;
+  margin-bottom:18px;
+  font-size:22px;
+  letter-spacing:0.5px;
+}
+
+/* 📋 Worker list */
+.list{
+  flex:1;
+  display:grid;
+  grid-template-rows:repeat(5,1fr);
+  gap:12px;   /* 🔻 tighter gap */
+}
+
+/* 👤 Worker item */
+.worker{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+
+  background:rgba(255,255,255,0.22);
+  border-radius:16px;
+  cursor:pointer;
+  transition:0.25s ease;
+
+  /* 🔑 responsive text */
+  font-size:clamp(18px,2.5vw,24px);
+  font-weight:600;
+}
+.worker:hover{
+  background:rgba(255,255,255,0.38);
+  transform:scale(1.015);
+}
+
+/* role text */
+.role{
+  font-size:clamp(12px,1.8vw,14px);
+  margin-top:4px;
+  opacity:0.85;
+}
+</style>
 </head>
+
 <body>
 
-<h2>Save User Name</h2>
+<div class="box">
+  <h2>Select Worker</h2>
 
-<input id="name" placeholder="Enter name">
-<button onclick="saveData()">Save</button>
+  <div class="list">
 
-<p id="msg"></p>
+    <div class="worker" onclick="openWorker('Ramesh')">
+      👤 Ramesh
+      <div class="role">Helper</div>
+    </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <div class="worker" onclick="openWorker('Suresh')">
+      👤 Suresh
+      <div class="role">Supervisor</div>
+    </div>
+
+    <div class="worker" onclick="openWorker('Amit')">
+      👤 Amit
+      <div class="role">Manager</div>
+    </div>
+
+    <div class="worker" onclick="openWorker('Raj')">
+      👤 Raj
+      <div class="role">Electrician</div>
+    </div>
+
+    <div class="worker" onclick="openWorker('Vikas')">
+      👤 Vikas
+      <div class="role">Operator</div>
+    </div>
+
+  </div>
+</div>
+
 <script>
-  const SUPABASE_URL = "https://zmatzumlwmrbyhxoklri.supabase.co";
-  const SUPABASE_KEY = "sb_publishable_OMvn9FpZkZPNoEkvaZLmyQ_gB7mlbzc";
-
-  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-  async function saveData() {
-    const name = document.getElementById("name").value;
-
-    if (!name) {
-      alert("Name required");
-      return;
-    }
-
-    const { error } = await sb
-      .from("users")
-      .insert([{ name }]);
-
-    if (error) {
-      document.getElementById("msg").innerText =
-        "Error: " + error.message;
-    } else {
-      document.getElementById("msg").innerText =
-        "Data Saved ✅";
-      document.getElementById("name").value = "";
-    }
-  }
+function openWorker(name){
+  localStorage.setItem("currentWorker",name);
+  alert("Selected Worker: " + name);
+  // next page ready
+  // window.location.href = "attendance.html";
+}
 </script>
 
 </body>
