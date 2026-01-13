@@ -40,7 +40,15 @@ body{
   flex-direction:column;
 }
 
-h2{text-align:center;margin-bottom:16px;font-size:22px;letter-spacing:.5px;}
+/* Title */
+h2{
+  text-align:center;
+  margin-bottom:16px;
+  font-size:22px;
+  letter-spacing:.5px;
+}
+
+/* 📋 List */
 .list{
   flex:1;
   display:grid;
@@ -48,6 +56,7 @@ h2{text-align:center;margin-bottom:16px;font-size:22px;letter-spacing:.5px;}
   gap:10px;
 }
 
+/* 👤 Worker card */
 .worker{
   background:rgba(255,255,255,0.22);
   border-radius:16px;
@@ -59,6 +68,8 @@ h2{text-align:center;margin-bottom:16px;font-size:22px;letter-spacing:.5px;}
   box-shadow:0 6px 16px rgba(0,0,0,.18);
   cursor:pointer;
 }
+
+/* Attendance colors */
 .worker.present{
   background:rgba(0,200,100,0.45);
   border-left:6px solid #00e676;
@@ -66,14 +77,28 @@ h2{text-align:center;margin-bottom:16px;font-size:22px;letter-spacing:.5px;}
 .worker.absent{
   background:rgba(255,80,80,0.45);
   border-left:6px solid #ff5252;
+  
 }
+  
+}
+
+/* 👤 Name info */
 .info{
   font-size:clamp(18px,2.4vw,24px);
   font-weight:600;
   line-height:1.1;
   padding-bottom:2px;
+  
+ 
+  
+  
 }
-.actions{display:flex;align-items:center;}
+
+/* Buttons */
+.actions{
+  display:flex;
+  align-items:center;
+}
 .actions button{
   border:none;
   border-radius:10px;
@@ -94,62 +119,100 @@ h2{text-align:center;margin-bottom:16px;font-size:22px;letter-spacing:.5px;}
 
 <div class="box">
   <h2>Daily Attendance</h2>
+
   <div class="list">
 
-    <div class="worker" data-name="Soniya"><div class="info">👤 Soniya</div>
-      <div class="actions"><button class="presentBtn">P</button><button class="absentBtn">A</button></div></div>
+    <div class="worker" data-name="Soniya">
+      <div class="info">👤 Soniya</div>
+      <div class="actions">
+        <button class="presentBtn">P</button>
+        <button class="absentBtn">A</button>
+      </div>
+    </div>
 
-    <div class="worker" data-name="Mummy"><div class="info">👤 Mummy</div>
-      <div class="actions"><button class="presentBtn">P</button><button class="absentBtn">A</button></div></div>
+    <div class="worker" data-name="Mummy">
+      <div class="info">👤 Mummy</div>
+      <div class="actions">
+        <button class="presentBtn">P</button>
+        <button class="absentBtn">A</button>
+      </div>
+    </div>
 
-    <div class="worker" data-name="Sanjeeta"><div class="info">👤 Sanjeeta</div>
-      <div class="actions"><button class="presentBtn">P</button><button class="absentBtn">A</button></div></div>
+    <div class="worker" data-name="Sanjeeta">
+      <div class="info">👤 Sanjeeta</div>
+      <div class="actions">
+        <button class="presentBtn">P</button>
+        <button class="absentBtn">A</button>
+      </div>
+    </div>
 
-    <div class="worker" data-name="Sanjit"><div class="info">👤 Sanjit</div>
-      <div class="actions"><button class="presentBtn">P</button><button class="absentBtn">A</button></div></div>
+    <div class="worker" data-name="Sanjit">
+      <div class="info">👤 Sanjit</div>
+      <div class="actions">
+        <button class="presentBtn">P</button>
+        <button class="absentBtn">A</button>
+      </div>
+    </div>
 
-    <div class="worker" data-name="Piyush"><div class="info">👤 Piyush</div>
-      <div class="actions"><button class="presentBtn">P</button><button class="absentBtn">A</button></div></div>
+    <div class="worker" data-name="Piyush">
+      <div class="info">👤 Piyush</div>
+      <div class="actions">
+        <button class="presentBtn">P</button>
+        <button class="absentBtn">A</button>
+      </div>
+    </div>
 
   </div>
 </div>
 
 <script>
-const SHEET_URL = "https://script.google.com/macros/s/AKfycby2ywfOQUxH11rgHiwHQsIqVEY13y30Nd3JLQjeWU_NgJ8z2_Y1uvn4k3xesC4c8xKLxA/exec";
-
 let attendance = JSON.parse(localStorage.getItem("attendance")) || {};
 
 document.querySelectorAll(".worker").forEach(card=>{
   const name = card.dataset.name;
 
+  // Restore attendance state
   if(attendance[name]==="P") card.classList.add("present");
   if(attendance[name]==="A") card.classList.add("absent");
 
-  card.querySelector(".presentBtn").onclick=(e)=>{
+  card.querySelector(".presentBtn").onclick = (e)=>{
     e.stopPropagation();
-    card.classList.add("present"); card.classList.remove("absent");
-    attendance[name]="P"; save();
-  };
-  card.querySelector(".absentBtn").onclick=(e)=>{
-    e.stopPropagation();
-    card.classList.add("absent"); card.classList.remove("present");
-    attendance[name]="A"; save();
+    card.classList.add("present");
+    card.classList.remove("absent");
+    attendance[name]="P";
+    save();
   };
 
-  card.onclick=()=>{
-    // open calendar page for this worker
-    window.location.href="calendar.html?name="+encodeURIComponent(name);
+  card.querySelector(".absentBtn").onclick = (e)=>{
+    e.stopPropagation();
+    card.classList.add("absent");
+    card.classList.remove("present");
+    attendance[name]="A";
+    save();
+  };
+
+  // Click on card → open calendar page for this worker
+  card.onclick = ()=>{
+    window.location.href = "calendar.html?name=" + encodeURIComponent(name);
   };
 });
 
-function save(){ localStorage.setItem("attendance",JSON.stringify(attendance)); }
-
-// Optional: fetch Sheet data if you want
-fetch(SHEET_URL)
-  .then(res=>res.json())
-  .then(data=>console.log("Sheet Data:",data))
-  .catch(err=>console.error(err));
-
+function save(){
+  localStorage.setItem("attendance",JSON.stringify(attendance));
+}
 </script>
+
+  
+  <script>
+const SHEET_URL = "PASTE_YOUR_LINK_HERE";
+
+fetch(SHEET_URL)
+  .then(res => res.json())
+  .then(data => {
+    console.log("Sheet Data:", data);
+  })
+  .catch(err => console.error(err));
+</script>
+  
 </body>
 </html>
