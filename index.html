@@ -122,7 +122,7 @@ h2{
 
   <div class="list">
 
-    <div class="worker" data-name="Soniya">
+    <div class="worker" data-id="1" data-name="Soniya">
       <div class="info">👤 Soniya</div>
       <div class="actions">
         <button class="presentBtn">P</button>
@@ -130,7 +130,7 @@ h2{
       </div>
     </div>
 
-    <div class="worker" data-name="Mummy">
+    <div class="worker" data-id="2" data-name="Mummy">
       <div class="info">👤 Mummy</div>
       <div class="actions">
         <button class="presentBtn">P</button>
@@ -138,7 +138,7 @@ h2{
       </div>
     </div>
 
-    <div class="worker" data-name="Sanjeeta">
+    <div class="worker" data-id="3" data-name="Sanjeeta">
       <div class="info">👤 Sanjeeta</div>
       <div class="actions">
         <button class="presentBtn">P</button>
@@ -146,7 +146,7 @@ h2{
       </div>
     </div>
 
-    <div class="worker" data-name="Sanjit">
+    <div class="worker" data-id="4" data-name="Sanjit">
       <div class="info">👤 Sanjit</div>
       <div class="actions">
         <button class="presentBtn">P</button>
@@ -154,7 +154,7 @@ h2{
       </div>
     </div>
 
-    <div class="worker" data-name="Piyush">
+    <div class="worker" data-id="5" data-name="Piyush">
       <div class="info">👤 Piyush</div>
       <div class="actions">
         <button class="presentBtn">P</button>
@@ -204,15 +204,53 @@ function save(){
 
   
   <script>
-const SHEET_URL = "PASTE_YOUR_LINK_HERE";
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbw78sTZmRja9ioMT6Ey_3B38bmGphuRA94lFwF-FGBiHuGRqQrLNx8gp1QAlRWKY0F1/exec";
+let sheetData = [];
+<script> // store all sheet data
 
-fetch(SHEET_URL)
-  .then(res => res.json())
-  .then(data => {
-    console.log("Sheet Data:", data);
-  })
-  .catch(err => console.error(err));
+// 1️⃣ Fetch all data on page load
+async function fetchSheetData() {
+  try {
+    const res = await fetch(SHEET_URL);
+    sheetData = await res.json();
+    console.log("Sheet data loaded:", sheetData);
+  } catch (err) {
+    console.error("Error fetching sheet data:", err);
+    alert("Failed to load data from Sheet!");
+  }
+}
+
+// 2️⃣ Call fetch on load
+fetchSheetData();
+
+// 3️⃣ Add click handler for each worker card
+document.querySelectorAll(".worker").forEach(card => {
+  card.onclick = () => {
+    const workerId = card.dataset.id;
+    const workerName = card.dataset.name;
+
+    // Filter only this worker's data
+    const workerData = sheetData.filter(entry => entry.id == workerId);
+
+    // Convert into day-status object
+    const attendance = {};
+    workerData.forEach(entry => {
+      const date = new Date(entry.date);
+      const day = date.getDate(); // day number
+      attendance[day] = entry.status; // "P" or "A"
+    });
+
+    // Save to localStorage for calendar page
+    localStorage.setItem("attendance_" + workerId, JSON.stringify(attendance));
+
+    // Redirect to calendar page
+    window.location.href = calendar.html?id=${workerId}&name=${encodeURIComponent(workerName)};
+  };
+});
 </script>
-  
+
+
+
+    
 </body>
 </html>
