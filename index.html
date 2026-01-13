@@ -195,5 +195,27 @@ function save(){
 }
 </script>
 
+
+
+
+
+
+
+
+<script>
+const SHEET_URL = "PASTE_YOUR_LINK_HERE";
+
+fetch(SHEET_URL)
+  .then(res => res.json())
+  .then(data => {
+    console.log("Sheet Data:", data);
+  })
+  .catch(err => console.error(err));
+</script>
+
+
+
+
+  
 </body>
 </html>
