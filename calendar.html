@@ -8,34 +8,180 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{height:100%;font-family:'Segoe UI',Tahoma,Verdana,sans-serif;}
-body{background:linear-gradient(270deg,#ff416c,#ff4b2b,#ff6a00,#fcd800,#0ff0b3,#2196f3,#9c27b0);
-background-size:1400% 1400%;animation:rainbow 15s ease infinite;display:flex;justify-content:center;align-items:flex-start;padding:16px;}
-@keyframes rainbow{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
 
-.container{width:100%;max-width:900px;min-height:85vh;background:rgba(255,255,255,0.15);backdrop-filter:blur(14px);border-radius:20px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.35);display:flex;flex-direction:column;gap:16px;}
-.header{display:flex;justify-content:center;align-items:center;text-shadow:0 2px 8px rgba(0,0,0,.4);}
-.workerName{font-size:20px;font-weight:700;color:#fff;}
-.salaryBox{margin:0 auto;width:180px;height:50px;border-radius:25px;background:linear-gradient(270deg,#ff416c,#ff4b2b,#ff6a00,#fcd800,#0ff0b3,#2196f3,#9c27b0);background-size:1400% 1400%;animation:rainbow 8s ease infinite;display:flex;justify-content:center;align-items:center;font-size:24px;font-weight:700;color:#fff;box-shadow:0 6px 20px rgba(0,0,0,.45);text-shadow:0 2px 6px rgba(0,0,0,.5);}
-.infoBar{display:flex;justify-content:space-around;gap:10px;background:rgba(255,255,255,0.15);border-radius:20px;padding:10px;font-weight:600;font-size:14px;color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.35);}
-.weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;justify-items:center;margin-bottom:6px;font-weight:600;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.5);}
+/* 🌈 Background */
+body{
+  background:linear-gradient(270deg,#ff416c,#ff4b2b,#ff6a00,#fcd800,#0ff0b3,#2196f3,#9c27b0);
+  background-size:1400% 1400%;
+  animation:rainbow 15s ease infinite;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  padding:16px;
+}
+@keyframes rainbow{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* 📦 Container */
+.container{
+  width:100%;
+  max-width:900px;
+  min-height:85vh;
+  background:rgba(255,255,255,0.15);
+  backdrop-filter:blur(14px);
+  border-radius:20px;
+  padding:18px;
+  box-shadow:0 10px 30px rgba(0,0,0,.35);
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+/* 🔝 Header */
+.header{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-shadow:0 2px 8px rgba(0,0,0,.4);
+}
+.workerName{
+  font-size:20px;
+  font-weight:700;
+  color:#fff;
+}
+
+/* 💰 Salary Box */
+.salaryBox{
+  margin:0 auto;
+  width:180px;
+  height:50px;
+  border-radius:25px;
+  background:linear-gradient(270deg,#ff416c,#ff4b2b,#ff6a00,#fcd800,#0ff0b3,#2196f3,#9c27b0);
+  background-size:1400% 1400%;
+  animation:rainbow 8s ease infinite;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:24px;
+  font-weight:700;
+  color:#fff;
+  box-shadow:0 6px 20px rgba(0,0,0,.45);
+  text-shadow:0 2px 6px rgba(0,0,0,.5);
+}
+
+/* 📊 Info Bar */
+.infoBar{
+  display:flex;
+  justify-content:space-around;
+  gap:10px;
+  background:rgba(255,255,255,0.15);
+  border-radius:20px;
+  padding:10px;
+  font-weight:600;
+  font-size:14px;
+  color:#fff;
+  box-shadow:0 6px 18px rgba(0,0,0,.35);
+}
+
+/* 📅 Weekday Headers */
+.weekdays{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:4px;
+  justify-items:center;
+  margin-bottom:6px;
+  font-weight:600;
+  color:#fff;
+  text-shadow:0 1px 4px rgba(0,0,0,.5);
+}
 .weekdays div{font-size:14px;}
-.calendarWrapper{flex:1;background:rgba(255,255,255,0.12);border-radius:18px;padding:14px;display:flex;flex-direction:column;box-shadow:0 6px 18px rgba(0,0,0,.35);}
-.month{text-align:center;font-size:16px;margin-bottom:10px;opacity:.9;text-shadow:0 1px 4px rgba(0,0,0,.3);}
-.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;width:100%;box-sizing:border-box;justify-items:center;}
-.day{width:100%;max-width:50px;aspect-ratio:1/1;border-radius:50%;background:rgba(255,255,255,0.25);display:flex;justify-content:center;align-items:center;font-size:16px;font-weight:600;box-shadow:0 4px 14px rgba(0,0,0,.25);transition:.25s ease;cursor:pointer;user-select:none;}
-.day.present{background:rgba(0,200,100,0.45);box-shadow:0 6px 20px rgba(0,200,100,.35);}
-.day.absent{background:rgba(255,80,80,0.45);box-shadow:0 6px 20px rgba(255,80,80,.35);}
-.bottomButton{margin-top:12px;border:none;background:rgba(255,255,255,.25);color:#fff;padding:10px 18px;border-radius:14px;cursor:pointer;font-weight:600;box-shadow:0 6px 18px rgba(0,0,0,.35);transition:.25s ease;}
+
+/* 📅 Calendar Wrapper */
+.calendarWrapper{
+  flex:1;
+  background:rgba(255,255,255,0.12);
+  border-radius:18px;
+  padding:14px;
+  display:flex;
+  flex-direction:column;
+  box-shadow:0 6px 18px rgba(0,0,0,.35);
+}
+
+/* Month label */
+.month{
+  text-align:center;
+  font-size:16px;
+  margin-bottom:10px;
+  opacity:.9;
+  text-shadow:0 1px 4px rgba(0,0,0,.3);
+}
+
+/* Calendar Grid */
+.calendar{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:4px;
+  width:100%;
+  box-sizing:border-box;
+  justify-items:center;
+}
+
+/* Day circle */
+.day{
+  width:100%;
+  max-width:50px;
+  aspect-ratio:1/1;
+  border-radius:50%;
+  background:rgba(255,255,255,0.25);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:16px;
+  font-weight:600;
+  box-shadow:0 4px 14px rgba(0,0,0,.25);
+  transition:.25s ease;
+  cursor:pointer;
+  user-select:none;
+}
+.day.present{ background:rgba(0,200,100,0.45); box-shadow:0 6px 20px rgba(0,200,100,.35);}
+.day.absent{ background:rgba(255,80,80,0.45); box-shadow:0 6px 20px rgba(255,80,80,.35);}
+
+/* Bottom button */
+.bottomButton{
+  margin-top:12px;
+  border:none;
+  background:rgba(255,255,255,.25);
+  color:#fff;
+  padding:10px 18px;
+  border-radius:14px;
+  cursor:pointer;
+  font-weight:600;
+  box-shadow:0 6px 18px rgba(0,0,0,.35);
+  transition:.25s ease;
+}
 .bottomButton:hover{background:rgba(255,255,255,.35);}
-@media (max-width:480px){.day{max-width:40px;font-size:14px;}.salaryBox{width:150px;height:45px;font-size:20px;}}
+
+/* Responsive for small screens */
+@media (max-width:480px){
+  .day{max-width:40px;font-size:14px;}
+  .salaryBox{width:150px;height:45px;font-size:20px;}
+}
 </style>
 </head>
 
 <body>
 
 <div class="container">
-  <div class="header"><div class="workerName" id="workerName">Worker Name</div></div>
+
+  <div class="header">
+    <div class="workerName" id="workerName">Worker Name</div>
+  </div>
+
   <div class="salaryBox">₹</div>
+
   <div class="infoBar">
     <div>Total Days: <span id="totalDays">30</span></div>
     <div>Present: <span id="presentCount">0</span></div>
@@ -49,79 +195,96 @@ background-size:1400% 1400%;animation:rainbow 15s ease infinite;display:flex;jus
   </div>
 
   <button class="bottomButton" onclick="history.back()">← Back</button>
+
 </div>
 
 <script>
+// === Worker name from URL ===
 const params = new URLSearchParams(location.search);
 const worker = params.get("name") || "Worker";
 document.getElementById("workerName").innerText = worker;
 
-const SHEET_URL = "https://script.google.com/macros/s/AKfycby2ywfOQUxH11rgHiwHQsIqVEY13y30Nd3JLQjeWU_NgJ8z2_Y1uvn4k3xesC4c8xKLxA/exec";
+// === Load saved attendance for this worker ===
+let attendance = JSON.parse(localStorage.getItem("attendance_" + worker)) || {};
+let presentCount = Object.values(attendance).filter(v => v === "P").length;
+let absentCount = Object.values(attendance).filter(v => v === "A").length;
+document.getElementById("presentCount").innerText = presentCount;
+document.getElementById("absentCount").innerText = absentCount;
 
-// Load Google Sheet data
-fetch(SHEET_URL)
-  .then(res=>res.json())
-  .then(data=>{
-    console.log("Sheet Data:",data);
+// === Calendar generation ===
+const calendar = document.getElementById("calendar");
+const weekdaysRow = document.getElementById("weekdaysRow");
+const monthLabel = document.getElementById("monthLabel");
 
-    // Calendar generation
-    const calendar = document.getElementById("calendar");
-    const weekdaysRow = document.getElementById("weekdaysRow");
-    const monthLabel = document.getElementById("monthLabel");
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth();
-    const daysInMonth = new Date(year, month+1,0).getDate();
-    const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-    monthLabel.innerText = monthNames[month]+" "+year;
-    const weekdays = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-    weekdays.forEach(d=>{
-      const div = document.createElement("div");
-      div.innerText=d;
-      weekdaysRow.appendChild(div);
-    });
-    const firstDay = new Date(year,month,1).getDay();
-    calendar.innerHTML="";
-    for(let i=0;i<firstDay;i++){const e=document.createElement("div");e.style.visibility="hidden";calendar.appendChild(e);}
-    for(let i=1;i<=daysInMonth;i++){
-      const d = document.createElement("div");
-      d.className="day";
-      d.dataset.day=i;
-      const dateObj = new Date(year,month,i);
-      d.title = weekdays[dateObj.getDay()];
-      d.innerText=i;
+const today = new Date();
+const year = today.getFullYear();
+const month = today.getMonth();
+const daysInMonth = new Date(year, month+1, 0).getDate();
 
-      // Fill attendance from Sheet
-      data.forEach(row=>{
-        if(row.Name!==worker) return;
-        const dayNum = parseInt(row.Date.split("/")[0],10);
-        if(dayNum===i){
-          if(row.Status==="P") d.classList.add("present");
-          if(row.Status==="A") d.classList.add("absent");
-        }
-      });
-      calendar.appendChild(d);
+const monthNames = ["January","February","March","April","May","June",
+                    "July","August","September","October","November","December"];
+monthLabel.innerText = monthNames[month]+" "+year;
+
+const weekdays = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+weekdays.forEach(day=>{
+  const div = document.createElement("div");
+  div.innerText = day;
+  weekdaysRow.appendChild(div);
+});
+
+// First day offset
+const firstDay = new Date(year, month,1).getDay();
+calendar.innerHTML="";
+
+// Empty slots
+for(let i=0;i<firstDay;i++){
+  const empty = document.createElement("div");
+  empty.style.visibility="hidden";
+  calendar.appendChild(empty);
+}
+
+// Add day boxes
+for(let i=1;i<=daysInMonth;i++){
+  const div = document.createElement("div");
+  div.className="day";
+  div.dataset.day=i;
+  const dateObj=new Date(year,month,i);
+  div.title = weekdays[dateObj.getDay()];
+  div.innerText=i;
+
+  // Restore saved state
+  if(attendance[i]==="P") div.classList.add("present");
+  if(attendance[i]==="A") div.classList.add("absent");
+
+  calendar.appendChild(div);
+}
+
+// Click event
+const calendarDays = document.querySelectorAll(".day");
+calendarDays.forEach(day=>{
+  day.onclick = ()=>{
+    const dayNum = day.dataset.day;
+
+    if(!day.classList.contains("present")){
+      day.classList.add("present");
+      day.classList.remove("absent");
+      attendance[dayNum] = "P";
+    } else {
+      day.classList.add("absent");
+      day.classList.remove("present");
+      attendance[dayNum] = "A";
     }
 
-    // Click event
-    let attendance = {};
-    const calendarDays = document.querySelectorAll(".day");
-    calendarDays.forEach(day=>{
-      day.onclick=()=>{
-        const dayNum=day.dataset.day;
-        if(!day.classList.contains("present")){
-          day.classList.add("present");day.classList.remove("absent");attendance[dayNum]="P";
-        }else{
-          day.classList.add("absent");day.classList.remove("present");attendance[dayNum]="A";
-        }
-        document.getElementById("presentCount").innerText=Object.values(attendance).filter(v=>v==="P").length;
-        document.getElementById("absentCount").innerText=Object.values(attendance).filter(v=>v==="A").length;
-        localStorage.setItem("attendance_"+worker,JSON.stringify(attendance));
-      }
-    });
+    presentCount = Object.values(attendance).filter(v => v === "P").length;
+    absentCount = Object.values(attendance).filter(v => v === "A").length;
 
-  })
-  .catch(err=>console.error("Fetch error:",err));
+    document.getElementById("presentCount").innerText = presentCount;
+    document.getElementById("absentCount").innerText = absentCount;
+
+    localStorage.setItem("attendance_" + worker, JSON.stringify(attendance));
+  }
+});
 </script>
+
 </body>
 </html>
