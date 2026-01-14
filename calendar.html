@@ -9,7 +9,6 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{height:100%;font-family:'Segoe UI',Tahoma,Verdana,sans-serif;}
 
-/* 🌈 Background */
 body{
   background:linear-gradient(270deg,#ff416c,#ff4b2b,#ff6a00,#fcd800,#0ff0b3,#2196f3,#9c27b0);
   background-size:1400% 1400%;
@@ -25,7 +24,6 @@ body{
   100%{background-position:0% 50%;}
 }
 
-/* 📦 Container */
 .container{
   width:100%;
   max-width:900px;
@@ -40,214 +38,353 @@ body{
   gap:16px;
 }
 
-/* 🔝 Header */
 .header{
   display:flex;
   justify-content:center;
-  align-items:center;
   text-shadow:0 2px 8px rgba(0,0,0,.4);
 }
-.workerName{
-  font-size:20px;
-  font-weight:700;
-  color:#fff;
-}
+.workerName{font-size:20px;font-weight:700;color:#fff;}
 
-/* 💰 Salary Box */
 .salaryBox{
   margin:0 auto;
-  width:180px;
-  height:50px;
-  border-radius:25px;
+  width:180px;height:50px;border-radius:25px;
   background:linear-gradient(270deg,#ff416c,#ff4b2b,#ff6a00,#fcd800,#0ff0b3,#2196f3,#9c27b0);
   background-size:1400% 1400%;
   animation:rainbow 8s ease infinite;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-size:24px;
-  font-weight:700;
-  color:#fff;
+  display:flex;justify-content:center;align-items:center;
+  font-size:24px;font-weight:700;color:#fff;
   box-shadow:0 6px 20px rgba(0,0,0,.45);
-  text-shadow:0 2px 6px rgba(0,0,0,.5);
 }
 
-/* 📊 Info Bar */
 .infoBar{
-  display:flex;
-  justify-content:space-around;
-  gap:10px;
+  display:flex;justify-content:space-around;
   background:rgba(255,255,255,0.15);
-  border-radius:20px;
-  padding:10px;
-  font-weight:600;
-  font-size:14px;
-  color:#fff;
-  box-shadow:0 6px 18px rgba(0,0,0,.35);
+  border-radius:20px;padding:10px;
+  color:#fff;font-weight:600;
 }
 
-/* 📅 Weekday Headers */
 .weekdays{
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:4px;
-  justify-items:center;
-  margin-bottom:6px;
-  font-weight:600;
-  color:#fff;
-  text-shadow:0 1px 4px rgba(0,0,0,.5);
+  display:grid;grid-template-columns:repeat(7,1fr);
+  text-align:center;color:#fff;
 }
-.weekdays div{font-size:14px;}
-
-/* 📅 Calendar Wrapper */
-.calendarWrapper{
-  flex:1;
-  background:rgba(255,255,255,0.12);
-  border-radius:18px;
-  padding:14px;
-  display:flex;
-  flex-direction:column;
-  box-shadow:0 6px 18px rgba(0,0,0,.35);
-}
-
-/* Month label */
-.month{
-  text-align:center;
-  font-size:16px;
-  margin-bottom:10px;
-  opacity:.9;
-  text-shadow:0 1px 4px rgba(0,0,0,.3);
-}
-
-/* Calendar Grid */
 .calendar{
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:4px;
-  width:100%;
-  box-sizing:border-box;
-  justify-items:center;
+  display:grid;grid-template-columns:repeat(7,1fr);
+  gap:6px;justify-items:center;
 }
 
-/* Day circle */
 .day{
-  width:100%;
-  max-width:50px;
-  aspect-ratio:1/1;
+  width:100%;max-width:48px;aspect-ratio:1;
   border-radius:50%;
   background:rgba(255,255,255,0.25);
-  display:flex;
+  display:flex;justify-content:center;align-items:center;
+  font-weight:600;color:#fff;
+  cursor:pointer;
+}
+.day.present{background:rgba(0,200,100,.5);}
+.day.absent{background:rgba(255,80,80,.5);}
+
+.bottomButton{
+  border:none;background:rgba(255,255,255,.25);
+  color:#fff;padding:10px;border-radius:14px;
+  cursor:pointer;font-weight:600;
+}
+
+/* ===== Dialog ===== */
+.dialogOverlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.6);
+  backdrop-filter:blur(4px);
+  display:none;
   justify-content:center;
   align-items:center;
-  font-size:16px;
-  font-weight:600;
-  box-shadow:0 4px 14px rgba(0,0,0,.25);
-  transition:.25s ease;
-  cursor:pointer;
-  user-select:none;
+  z-index:999;
 }
-.day.present{ background:rgba(0,200,100,0.45); box-shadow:0 6px 20px rgba(0,200,100,.35);}
-.day.absent{ background:rgba(255,80,80,0.45); box-shadow:0 6px 20px rgba(255,80,80,.35);}
-
-/* Bottom button */
-.bottomButton{
-  margin-top:12px;
-  border:none;
-  background:rgba(255,255,255,.25);
+  
+  
+  
+  
+  
+/*.dialogBox{
+  width:90%;max-width:320px;
+  background:rgba(255,255,255,.2);
+  backdrop-filter:blur(16px);
+  border-radius:18px;
+  padding:18px;color:#fff;
+}*/
+  .dialogBox{
+  width:90%;
+  max-width:320px;
+  background:linear-gradient(270deg,
+    #ff416c,
+    #ff4b2b,
+    #ff6a00,
+    #fcd800,
+    #0ff0b3,
+    #2196f3,
+    #9c27b0
+  );
+  background-size:1400% 1400%;
+  animation:rainbow 8s ease infinite;
+  border-radius:20px;
+  padding:18px;
   color:#fff;
-  padding:10px 18px;
-  border-radius:14px;
-  cursor:pointer;
-  font-weight:600;
-  box-shadow:0 6px 18px rgba(0,0,0,.35);
-  transition:.25s ease;
+  box-shadow:0 10px 35px rgba(0,0,0,.45);
 }
-.bottomButton:hover{background:rgba(255,255,255,.35);}
+  
+  
+  
+  
+  
+  
+  
+.dialogBox h3{text-align:center;margin-bottom:14px;}
+.dialogOptions label{
+  display:flex;gap:8px;
+  
+  
+  
+  background:rgba(255,255,255,.15);
+  
+  
+  
+  
+  
+  
+  padding:10px;border-radius:12px;
+  margin-bottom:8px;cursor:pointer;
+}
+.dialogButtons{display:flex;gap:10px;margin-top:12px;}
+.dialogButtons button{
+  flex:1;border:none;padding:10px;
+  border-radius:12px;font-weight:600;
+}
+.cancelBtn{
+  background:linear-gradient(135deg,#ff1744,#d50000);
+  color:#fff;
+}
+.okBtn{background:#00c853;color:#fff;}
+  
+  
+  
+  
+  /* Button press effect */
+  .okBtn, .cancelBtn{
+  transition:all .15s ease;
+}
 
-/* Responsive for small screens */
-@media (max-width:480px){
-  .day{max-width:40px;font-size:14px;}
-  .salaryBox{width:150px;height:45px;font-size:20px;}
+/* Press effect */
+/* Button press effect */
+.cancelBtn:active{
+  transform:scale(.96);
+  opacity:.85;
 }
+.okBtn:active{
+  transform:scale(.96);
+  opacity:.85;
+}
+  
+  
+  
+  
 </style>
 </head>
 
 <body>
 
 <div class="container">
-
   <div class="header">
-    <div class="workerName" id="workerName">Worker Name</div>
+    <div class="workerName" id="workerName">Worker</div>
   </div>
 
   <div class="salaryBox">₹</div>
 
   <div class="infoBar">
-    <div>Total Days: <span id="totalDays">30</span></div>
+    <div>Total Days: <span id="totalDays"></span></div>
     <div>Present: <span id="presentCount">0</span></div>
     <div>Absent: <span id="absentCount">0</span></div>
   </div>
 
-  <div class="calendarWrapper">
-    <div class="month" id="monthLabel">Month View</div>
-    <div class="weekdays" id="weekdaysRow"></div>
-    <div class="calendar" id="calendar"></div>
-  </div>
+  <div class="weekdays" id="weekdays"></div>
+  <div class="calendar" id="calendar"></div>
 
   <button class="bottomButton" onclick="history.back()">← Back</button>
+</div>
 
+<!-- Dialog -->
+<div class="dialogOverlay" id="dialog">
+  <div class="dialogBox">
+    <h3>Select Attendance</h3>
+    <div class="dialogOptions">
+      <label><input type="radio" name="att" value="P"> Present</label>
+      <label><input type="radio" name="att" value="A"> Absent</label>
+      <label><input type="radio" name="att" value=""> Clear</label>
+    </div>
+    <div class="dialogButtons">
+      <button class="cancelBtn">Cancel</button>
+      <button class="okBtn">OK</button>
+    </div>
+  </div>
 </div>
 
 <script>
-// 1️⃣ Read worker info from URL
+ const SHEET_URL = "https://script.google.com/macros/s/AKfycbxziFeUWKgzfRct2ZmM7lDeiVb6W1X98P3ONtVTOv625gq_LN7gzNmkTQMQDvcEZrp9SQ/exec";
+  
+  
+  async function fetchSheetData() {
+  try {
+    const res = await fetch(SHEET_URL);
+    const data = await res.json();
+    return data;
+  } catch (e) {
+    console.error("Fetch error", e);
+    return [];
+  }
+}
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  async function fetchSheetData() {
+  try {
+    const res = await fetch(SHEET_URL);
+    const data = await res.json();
+    return data;
+  } catch (e) {
+    console.error("Fetch error", e);
+    return [];
+  }
+}
+  
+  
+  
+  
+  
+  
 const params = new URLSearchParams(location.search);
-const workerName = params.get("name") || "Worker";
-const workerId = params.get("id");
+const worker = params.get("name") || "Worker";
+document.getElementById("workerName").innerText = worker;
 
-// Show worker name
-document.getElementById("workerName").innerText = workerName;
+const attendanceKey = "attendance_" + worker;
+let attendance = JSON.parse(localStorage.getItem(attendanceKey)) || {};
 
-// 2️⃣ Load attendance from localStorage
-let attendance = JSON.parse(localStorage.getItem("attendance_" + workerId)) || {};
+  
+  (async function initFromSheet() {
 
-// 3️⃣ Generate calendar
-const calendarDays = document.querySelectorAll(".day");
+  const sheetData = await fetchSheetData();
 
-calendarDays.forEach(day => {
-  const dayNum = day.dataset.day;
+  sheetData.forEach(row => {
+    // row = {date, id, status}
 
-  // Restore status
-  if (attendance[dayNum] === "P") day.classList.add("present");
-  if (attendance[dayNum] === "A") day.classList.add("absent");
-
-  // Toggle on click
-  day.onclick = () => {
-    if (!day.classList.contains("present")) {
-      day.classList.add("present");
-      day.classList.remove("absent");
-      attendance[dayNum] = "P";
-    } else {
-      day.classList.add("absent");
-      day.classList.remove("present");
-      attendance[dayNum] = "A";
+    if (row.status && row.date) {
+      attendance[row.date] = row.status;
     }
+  });
 
-    // Update counts
-    const presentCount = Object.values(attendance).filter(v => v === "P").length;
-    const absentCount = Object.values(attendance).filter(v => v === "A").length;
-    document.getElementById("presentCount").innerText = presentCount;
-    document.getElementById("absentCount").innerText = absentCount;
+  localStorage.setItem(attendanceKey, JSON.stringify(attendance));
 
-    // Save back to localStorage
-    localStorage.setItem("attendance_" + workerId, JSON.stringify(attendance));
+})();
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+const calendar = document.getElementById("calendar");
+const weekdaysDiv = document.getElementById("weekdays");
+const dialog = document.getElementById("dialog");
+const radios = document.querySelectorAll("input[name='att']");
+
+const today = new Date();
+const year = today.getFullYear();
+const month = today.getMonth();
+const daysInMonth = new Date(year, month+1, 0).getDate();
+document.getElementById("totalDays").innerText = daysInMonth;
+
+const week = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+week.forEach(d=>weekdaysDiv.innerHTML+=`<div>${d}</div>`);
+
+let selectedDate = "";
+
+for(let i=1;i<=daysInMonth;i++){
+  const fullDate = `${year}-${String(month+1).padStart(2,"0")}-${String(i).padStart(2,"0")}`;
+  const div = document.createElement("div");
+  div.className="day";
+  div.innerText=i;
+
+  if(attendance[fullDate]==="P") div.classList.add("present");
+  if(attendance[fullDate]==="A") div.classList.add("absent");
+
+  div.onclick=()=>{
+    selectedDate = fullDate;
+    radios.forEach(r=>r.checked = r.value === (attendance[selectedDate]||""));
+    dialog.style.display="flex";
   };
-});
 
-// 4️⃣ Update initial counts
-const presentCount = Object.values(attendance).filter(v => v === "P").length;
-const absentCount = Object.values(attendance).filter(v => v === "A").length;
-document.getElementById("presentCount").innerText = presentCount;
-document.getElementById("absentCount").innerText = absentCount;
+  calendar.appendChild(div);
+}
+
+document.querySelector(".cancelBtn").onclick=()=>{
+  dialog.style.display="none";
+};
+
+/*document.querySelector(".okBtn").onclick=()=>{
+  const val = document.querySelector("input[name='att']:checked")?.value;
+  if(val) attendance[selectedDate]=val;
+  else delete attendance[selectedDate];
+  localStorage.setItem(attendanceKey,JSON.stringify(attendance));
+  location.reload();
+};
+  */document.querySelector(".okBtn").onclick = () => {
+  const val = document.querySelector("input[name='att']:checked")?.value;
+
+  // 1️⃣ Local save (tumhara existing behaviour)
+  if (val) attendance[selectedDate] = val;
+  else delete attendance[selectedDate];
+
+  localStorage.setItem(attendanceKey, JSON.stringify(attendance));
+
+  // 2️⃣ Google Sheet ko bhejna
+  fetch(SHEET_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      worker: worker,
+      date: selectedDate,
+      status: val || ""
+    })
+  }).then(() => {
+    console.log("Sheet updated");
+  }).catch(err => {
+    console.error("Sheet error", err);
+  });
+
+  // 3️⃣ Dialog close + refresh
+  dialog.style.display = "none";
+  location.reload();
+};
+  
+  
+  
+  
+  
+  
+  
 </script>
+
 </body>
 </html>
