@@ -3,13 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Worker Attendance</title>
+<title>Attendance</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{height:100%;font-family:'Segoe UI',Tahoma,Verdana,sans-serif;}
 
-/* 🌈 Animated background */
 body{
   background:linear-gradient(270deg,#ff416c,#ff4b2b,#ff6a00,#fcd800,#0ff0b3,#2196f3,#9c27b0);
   background-size:1400% 1400%;
@@ -25,7 +24,6 @@ body{
   100%{background-position:0% 50%;}
 }
 
-/* 💎 Main box */
 .box{
   width:100%;
   max-width:820px;
@@ -40,15 +38,12 @@ body{
   flex-direction:column;
 }
 
-/* Title */
 h2{
   text-align:center;
   margin-bottom:16px;
   font-size:22px;
-  letter-spacing:.5px;
 }
 
-/* 📋 List */
 .list{
   flex:1;
   display:grid;
@@ -56,7 +51,6 @@ h2{
   gap:10px;
 }
 
-/* 👤 Worker card */
 .worker{
   background:rgba(255,255,255,0.22);
   border-radius:16px;
@@ -64,12 +58,10 @@ h2{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  transition:.25s ease;
   box-shadow:0 6px 16px rgba(0,0,0,.18);
   cursor:pointer;
 }
 
-/* Attendance colors */
 .worker.present{
   background:rgba(0,200,100,0.45);
   border-left:6px solid #00e676;
@@ -77,52 +69,71 @@ h2{
 .worker.absent{
   background:rgba(255,80,80,0.45);
   border-left:6px solid #ff5252;
-  
-}
-  
 }
 
-/* 👤 Name info */
 .info{
-  font-size:clamp(18px,2.4vw,24px);
+  font-size:20px;
   font-weight:600;
-  line-height:1.1;
-  padding-bottom:2px;
-  
- 
-  
-  
 }
 
-/* Buttons */
-.actions{
-  display:flex;
-  align-items:center;
-}
 .actions button{
   border:none;
   border-radius:10px;
-  padding:6px 12px;
+  padding:6px 14px;
   margin-left:6px;
   cursor:pointer;
   font-weight:700;
-  font-size:14px;
-  transition:.2s;
 }
 .presentBtn{background:#00c853;color:#fff;}
 .absentBtn{background:#e53935;color:#fff;}
-.actions button:hover{transform:scale(1.08);}
+
+/* ===== Confirmation Dialog ===== */
+.confirmOverlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  backdrop-filter:blur(4px);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:1000;
+}
+
+.confirmBox{
+  width:280px;
+  background:linear-gradient(135deg,#1fd1f9,#b621fe);
+  padding:18px;
+  border-radius:18px;
+  text-align:center;
+}
+
+.confirmBtns{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+}
+
+.confirmBtns button{
+  border:none;
+  border-radius:12px;
+  padding:8px 18px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.okBtn{background:#00e676;}
+.cancelBtn{background:#ff5252;color:#fff;}
 </style>
 </head>
 
 <body>
 
 <div class="box">
-  <h2>Daily Attendance</h2>
+  <h2 id="title"></h2>
 
   <div class="list">
 
-    <div class="worker" data-id="1" data-name="Soniya">
+    <div class="worker" data-name="Soniya">
       <div class="info">👤 Soniya</div>
       <div class="actions">
         <button class="presentBtn">P</button>
@@ -130,7 +141,7 @@ h2{
       </div>
     </div>
 
-    <div class="worker" data-id="2" data-name="Mummy">
+    <div class="worker" data-name="Mummy">
       <div class="info">👤 Mummy</div>
       <div class="actions">
         <button class="presentBtn">P</button>
@@ -138,7 +149,7 @@ h2{
       </div>
     </div>
 
-    <div class="worker" data-id="3" data-name="Sanjeeta">
+    <div class="worker" data-name="Sanjeeta">
       <div class="info">👤 Sanjeeta</div>
       <div class="actions">
         <button class="presentBtn">P</button>
@@ -146,7 +157,7 @@ h2{
       </div>
     </div>
 
-    <div class="worker" data-id="4" data-name="Sanjit">
+    <div class="worker" data-name="Sanjit">
       <div class="info">👤 Sanjit</div>
       <div class="actions">
         <button class="presentBtn">P</button>
@@ -154,7 +165,7 @@ h2{
       </div>
     </div>
 
-    <div class="worker" data-id="5" data-name="Piyush">
+    <div class="worker" data-name="Piyush">
       <div class="info">👤 Piyush</div>
       <div class="actions">
         <button class="presentBtn">P</button>
@@ -165,92 +176,91 @@ h2{
   </div>
 </div>
 
+<!-- Confirmation Dialog -->
+<div class="confirmOverlay" id="confirmOverlay">
+  <div class="confirmBox">
+    <h3 id="confirmText">Confirm?</h3>
+    <div class="confirmBtns">
+      <button class="cancelBtn" id="cancelBtn">Cancel</button>
+      <button class="okBtn" id="okBtn">OK</button>
+    </div>
+  </div>
+</div>
+
 <script>
+// ===== Live Time =====
+function updateTitle(){
+  const d=new Date();
+  document.getElementById("title").innerText =
+    d.toLocaleTimeString('en-GB',{hour12:false}) +
+    "  " +
+    d.toLocaleDateString('en-GB') + "," +
+    d.toLocaleDateString('en-US',{weekday:'short'});
+}
+setInterval(updateTitle,1000);
+updateTitle();
+
+// ===== Existing Attendance =====
 let attendance = JSON.parse(localStorage.getItem("attendance")) || {};
 
-document.querySelectorAll(".worker").forEach(card=>{
-  const name = card.dataset.name;
+// ===== Dialog Logic (SAFE) =====
+const overlay=document.getElementById("confirmOverlay");
+const confirmText=document.getElementById("confirmText");
+const cancelBtn=document.getElementById("cancelBtn");
+const okBtn=document.getElementById("okBtn");
 
-  // Restore attendance state
+let pendingAction=null;
+
+document.querySelectorAll(".worker").forEach(card=>{
+  const name=card.dataset.name;
+
   if(attendance[name]==="P") card.classList.add("present");
   if(attendance[name]==="A") card.classList.add("absent");
 
-  card.querySelector(".presentBtn").onclick = (e)=>{
-    e.stopPropagation();
-    card.classList.add("present");
-    card.classList.remove("absent");
-    attendance[name]="P";
-    save();
-  };
+  card.querySelector(".presentBtn").addEventListener("click",e=>{
+    e.stopImmediatePropagation();
+    confirmText.innerText=`Mark ${name} as PRESENT?`;
+    overlay.style.display="flex";
+    pendingAction=()=>{
+      card.classList.add("present");
+      card.classList.remove("absent");
+      attendance[name]="P";
+      save();
+    };
+  },true);
 
-  card.querySelector(".absentBtn").onclick = (e)=>{
-    e.stopPropagation();
-    card.classList.add("absent");
-    card.classList.remove("present");
-    attendance[name]="A";
-    save();
-  };
+  card.querySelector(".absentBtn").addEventListener("click",e=>{
+    e.stopImmediatePropagation();
+    confirmText.innerText=`Mark ${name} as ABSENT?`;
+    overlay.style.display="flex";
+    pendingAction=()=>{
+      card.classList.add("absent");
+      card.classList.remove("present");
+      attendance[name]="A";
+      save();
+    };
+  },true);
 
-  // Click on card → open calendar page for this worker
-  card.onclick = ()=>{
-    window.location.href = "calendar.html?name=" + encodeURIComponent(name);
+  card.onclick=()=>{
+    window.location.href="calendar.html?name="+encodeURIComponent(name);
   };
 });
+
+cancelBtn.onclick=()=>{
+  overlay.style.display="none";
+  pendingAction=null;
+};
+
+okBtn.onclick=()=>{
+  overlay.style.display="none";
+  if(pendingAction) pendingAction();
+  pendingAction=null;
+};
 
 function save(){
   localStorage.setItem("attendance",JSON.stringify(attendance));
 }
 </script>
 
-  
-  <script>
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbw78sTZmRja9ioMT6Ey_3B38bmGphuRA94lFwF-FGBiHuGRqQrLNx8gp1QAlRWKY0F1/exec";
-let sheetData = [];
-<script> // store all sheet data
-
-// 1️⃣ Fetch all data on page load
-async function fetchSheetData() {
-  try {
-    const res = await fetch(SHEET_URL);
-    sheetData = await res.json();
-    console.log("Sheet data loaded:", sheetData);
-  } catch (err) {
-    console.error("Error fetching sheet data:", err);
-    alert("Failed to load data from Sheet!");
-  }
-}
-
-// 2️⃣ Call fetch on load
-fetchSheetData();
-
-// 3️⃣ Add click handler for each worker card
-document.querySelectorAll(".worker").forEach(card => {
-  card.onclick = () => {
-    const workerId = card.dataset.id;
-    const workerName = card.dataset.name;
-
-    // Filter only this worker's data
-    const workerData = sheetData.filter(entry => entry.id == workerId);
-
-    // Convert into day-status object
-    const attendance = {};
-    workerData.forEach(entry => {
-      const date = new Date(entry.date);
-      const day = date.getDate(); // day number
-      attendance[day] = entry.status; // "P" or "A"
-    });
-
-    // Save to localStorage for calendar page
-    localStorage.setItem("attendance_" + workerId, JSON.stringify(attendance));
-
-    // Redirect to calendar page
-    window.location.href = calendar.html?id=${workerId}&name=${encodeURIComponent(workerName)};
-  };
-});
-</script>
-
-
-
-    
 </body>
 </html>
