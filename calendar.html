@@ -188,8 +188,20 @@ const params=new URLSearchParams(location.search);
 const worker=params.get("name")||"Worker";
 document.getElementById("workerName").innerText=worker;
 
-const DAILY_SALARY = 500; // 👈 PER DAY FIX SALARY
+//const DAILY_SALARY = 500; // 👈 PER DAY FIX SALARY
+const SALARY_MAP = {
+  "Soniya": 1,
+  "Mummy": 2,
+  "Sanjeeta": 3,
+  "Sanjit": 4,
+  "Piyush": 5
+};
 
+
+
+
+
+  
 const storageKey="attendance_"+worker;
 let attendance=JSON.parse(localStorage.getItem(storageKey))||{};
 
