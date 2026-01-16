@@ -191,11 +191,11 @@ document.getElementById("workerName").innerText=worker;
        //const DAILY_SALARY = 500; // 👈 PER DAY FIX SALARY
 /* 🔹 Salary Map (per worker) */
 const SALARY_MAP = {
-  "Soniya": 50,
-  "Mummy": 70,
-  "Sanjeeta": 40,
-  "Sanjit": 40,
-  "Piyush": 60
+  "Soniya": 12000/26,
+  "Mummy": 383,
+  "Sanjeeta": 383,
+  "Sanjit": 460,
+  "Piyush": 0
 };
 
 /* 🔹 Get salary by name */
@@ -268,7 +268,7 @@ function renderCalendar(){
   document.getElementById("absentCount").innerText=absentCount;
 
   /* 💰 SALARY CALC */
-  const totalSalary = presentCount * DAILY_SALARY;
+  const totalSalary = Math.round(presentCount * DAILY_SALARY);
   document.querySelector(".salaryBox").innerText = "₹ " + totalSalary;
 }
 
