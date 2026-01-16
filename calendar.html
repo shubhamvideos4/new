@@ -41,7 +41,6 @@ body{
 .header{
   display:flex;
   justify-content:center;
-  text-shadow:0 2px 8px rgba(0,0,0,.4);
 }
 .workerName{font-size:20px;font-weight:700;color:#fff;}
 
@@ -53,7 +52,6 @@ body{
   animation:rainbow 8s ease infinite;
   display:flex;justify-content:center;align-items:center;
   font-size:24px;font-weight:700;color:#fff;
-  box-shadow:0 6px 20px rgba(0,0,0,.45);
 }
 
 .infoBar{
@@ -63,10 +61,34 @@ body{
   color:#fff;font-weight:600;
 }
 
+/* Month navigation */
+.monthNav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  color:#fff;
+}
+
+.monthNav button{
+  background:rgba(255,255,255,.25);
+  border:none;
+  color:#fff;
+  padding:8px 14px;
+  border-radius:14px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.calendarMonth{
+  font-size:11px;
+  font-weight:700;
+}
+
 .weekdays{
   display:grid;grid-template-columns:repeat(7,1fr);
   text-align:center;color:#fff;
 }
+
 .calendar{
   display:grid;grid-template-columns:repeat(7,1fr);
   gap:6px;justify-items:center;
@@ -80,6 +102,7 @@ body{
   font-weight:600;color:#fff;
   cursor:pointer;
 }
+
 .day.present{background:rgba(0,200,100,.5);}
 .day.absent{background:rgba(255,80,80,.5);}
 
@@ -89,103 +112,31 @@ body{
   cursor:pointer;font-weight:600;
 }
 
-/* ===== Dialog ===== */
+/* Dialog */
 .dialogOverlay{
   position:fixed;inset:0;
   background:rgba(0,0,0,.6);
-  backdrop-filter:blur(4px);
   display:none;
   justify-content:center;
   align-items:center;
-  z-index:999;
 }
-  
-  
-  
-  
-  
-/*.dialogBox{
-  width:90%;max-width:320px;
-  background:rgba(255,255,255,.2);
-  backdrop-filter:blur(16px);
-  border-radius:18px;
-  padding:18px;color:#fff;
-}*/
-  .dialogBox{
+
+.dialogBox{
   width:90%;
   max-width:320px;
-  background:linear-gradient(270deg,
-    #ff416c,
-    #ff4b2b,
-    #ff6a00,
-    #fcd800,
-    #0ff0b3,
-    #2196f3,
-    #9c27b0
-  );
-  background-size:1400% 1400%;
-  animation:rainbow 8s ease infinite;
+  background:rgba(255,255,255,.25);
   border-radius:20px;
   padding:18px;
   color:#fff;
-  box-shadow:0 10px 35px rgba(0,0,0,.45);
 }
-  
-  
-  
-  
-  
-  
-  
-.dialogBox h3{text-align:center;margin-bottom:14px;}
-.dialogOptions label{
-  display:flex;gap:8px;
-  
-  
-  
-  background:rgba(255,255,255,.15);
-  
-  
-  
-  
-  
-  
-  padding:10px;border-radius:12px;
-  margin-bottom:8px;cursor:pointer;
-}
+
 .dialogButtons{display:flex;gap:10px;margin-top:12px;}
 .dialogButtons button{
   flex:1;border:none;padding:10px;
   border-radius:12px;font-weight:600;
 }
-.cancelBtn{
-  background:linear-gradient(135deg,#ff1744,#d50000);
-  color:#fff;
-}
+.cancelBtn{background:#d50000;color:#fff;}
 .okBtn{background:#00c853;color:#fff;}
-  
-  
-  
-  
-  /* Button press effect */
-  .okBtn, .cancelBtn{
-  transition:all .15s ease;
-}
-
-/* Press effect */
-/* Button press effect */
-.cancelBtn:active{
-  transform:scale(.96);
-  opacity:.85;
-}
-.okBtn:active{
-  transform:scale(.96);
-  opacity:.85;
-}
-  
-  
-  
-  
 </style>
 </head>
 
@@ -199,9 +150,16 @@ body{
   <div class="salaryBox">₹</div>
 
   <div class="infoBar">
-    <div>Total Days: <span id="totalDays"></span></div>
-    <div>Present: <span id="presentCount">0</span></div>
-    <div>Absent: <span id="absentCount">0</span></div>
+    <div>Total: <span id="totalDays"></span></div>
+    <div>P: <span id="presentCount">0</span></div>
+    <div>A: <span id="absentCount">0</span></div>
+  </div>
+
+  <!-- Month Navigation -->
+  <div class="monthNav">
+    <button onclick="changeMonth(-1)">◀ Prev</button>
+    <div class="calendarMonth" id="calendarMonth"></div>
+    <button onclick="changeMonth(1)">Next ▶</button>
   </div>
 
   <div class="weekdays" id="weekdays"></div>
@@ -214,11 +172,10 @@ body{
 <div class="dialogOverlay" id="dialog">
   <div class="dialogBox">
     <h3>Select Attendance</h3>
-    <div class="dialogOptions">
-      <label><input type="radio" name="att" value="P"> Present</label>
-      <label><input type="radio" name="att" value="A"> Absent</label>
-      <label><input type="radio" name="att" value=""> Clear</label>
-    </div>
+    <label><input type="radio" name="att" value="P"> Present</label><br>
+    <label><input type="radio" name="att" value="A"> Absent</label><br>
+    <label><input type="radio" name="att" value=""> Clear</label>
+
     <div class="dialogButtons">
       <button class="cancelBtn">Cancel</button>
       <button class="okBtn">OK</button>
@@ -227,163 +184,104 @@ body{
 </div>
 
 <script>
- const SHEET_URL = "https://script.google.com/macros/s/AKfycbxziFeUWKgzfRct2ZmM7lDeiVb6W1X98P3ONtVTOv625gq_LN7gzNmkTQMQDvcEZrp9SQ/exec";
-  
-  
-  async function fetchSheetData() {
-  try {
-    const res = await fetch(SHEET_URL);
-    const data = await res.json();
-    return data;
-  } catch (e) {
-    console.error("Fetch error", e);
-    return [];
+const params=new URLSearchParams(location.search);
+const worker=params.get("name")||"Worker";
+document.getElementById("workerName").innerText=worker;
+
+const DAILY_SALARY = 500; // 👈 PER DAY FIX SALARY
+
+const storageKey="attendance_"+worker;
+let attendance=JSON.parse(localStorage.getItem(storageKey))||{};
+
+const weekdays=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const weekdaysDiv=document.getElementById("weekdays");
+weekdaysDiv.innerHTML="";
+weekdays.forEach(d=>weekdaysDiv.innerHTML+=`<div>${d}</div>`);
+
+let current=new Date();
+let year=current.getFullYear();
+let month=current.getMonth();
+
+const monthNames=[
+"January","February","March","April","May","June",
+"July","August","Sept","October","November","December"
+];
+
+function renderCalendar(){
+  const calendar=document.getElementById("calendar");
+  calendar.innerHTML="";
+
+  const daysInMonth=new Date(year,month+1,0).getDate();
+  const firstDay=new Date(year,month,1).getDay(); // ✅ FIX
+
+  document.getElementById("totalDays").innerText=daysInMonth;
+  document.getElementById("calendarMonth").innerText=
+    monthNames[month]+" "+year;
+
+  let presentCount=0;
+  let absentCount=0;
+
+  /* 🔹 EMPTY CELLS BEFORE 1st DATE */
+  for(let i=0;i<firstDay;i++){
+    const empty=document.createElement("div");
+    empty.style.visibility="hidden";
+    calendar.appendChild(empty);
   }
-}
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  async function fetchSheetData() {
-  try {
-    const res = await fetch(SHEET_URL);
-    const data = await res.json();
-    return data;
-  } catch (e) {
-    console.error("Fetch error", e);
-    return [];
-  }
-}
-  
-  
-  
-  
-  
-  
-const params = new URLSearchParams(location.search);
-const worker = params.get("name") || "Worker";
-document.getElementById("workerName").innerText = worker;
 
-const attendanceKey = "attendance_" + worker;
-let attendance = JSON.parse(localStorage.getItem(attendanceKey)) || {};
+  for(let i=1;i<=daysInMonth;i++){
+    const dateKey=`${year}-${String(month+1).padStart(2,"0")}-${String(i).padStart(2,"0")}`;
+    const d=document.createElement("div");
+    d.className="day";
+    d.innerText=i;
 
-  
-  (async function initFromSheet() {
-
-  const sheetData = await fetchSheetData();
-
-  sheetData.forEach(row => {
-    // row = {date, id, status}
-
-    if (row.status && row.date) {
-      attendance[row.date] = row.status;
+    if(attendance[dateKey]==="P"){
+      d.classList.add("present");
+      presentCount++;
     }
-  });
+    if(attendance[dateKey]==="A"){
+      d.classList.add("absent");
+      absentCount++;
+    }
 
-  localStorage.setItem(attendanceKey, JSON.stringify(attendance));
+    d.onclick=()=>openDialog(dateKey);
+    calendar.appendChild(d);
+  }
 
-})();
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-const calendar = document.getElementById("calendar");
-const weekdaysDiv = document.getElementById("weekdays");
-const dialog = document.getElementById("dialog");
-const radios = document.querySelectorAll("input[name='att']");
+  document.getElementById("presentCount").innerText=presentCount;
+  document.getElementById("absentCount").innerText=absentCount;
 
-const today = new Date();
-const year = today.getFullYear();
-const month = today.getMonth();
-const daysInMonth = new Date(year, month+1, 0).getDate();
-document.getElementById("totalDays").innerText = daysInMonth;
+  /* 💰 SALARY CALC */
+  const totalSalary = presentCount * DAILY_SALARY;
+  document.querySelector(".salaryBox").innerText = "₹ " + totalSalary;
+}
 
-const week = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-week.forEach(d=>weekdaysDiv.innerHTML+=`<div>${d}</div>`);
+function changeMonth(step){
+  month+=step;
+  if(month<0){month=11;year--;}
+  if(month>11){month=0;year++;}
+  renderCalendar();
+}
 
-let selectedDate = "";
-
-for(let i=1;i<=daysInMonth;i++){
-  const fullDate = `${year}-${String(month+1).padStart(2,"0")}-${String(i).padStart(2,"0")}`;
-  const div = document.createElement("div");
-  div.className="day";
-  div.innerText=i;
-
-  if(attendance[fullDate]==="P") div.classList.add("present");
-  if(attendance[fullDate]==="A") div.classList.add("absent");
-
-  div.onclick=()=>{
-    selectedDate = fullDate;
-    radios.forEach(r=>r.checked = r.value === (attendance[selectedDate]||""));
-    dialog.style.display="flex";
-  };
-
-  calendar.appendChild(div);
+let selectedDate="";
+function openDialog(date){
+  selectedDate=date;
+  document.getElementById("dialog").style.display="flex";
 }
 
 document.querySelector(".cancelBtn").onclick=()=>{
-  dialog.style.display="none";
+  document.getElementById("dialog").style.display="none";
 };
 
-/*document.querySelector(".okBtn").onclick=()=>{
-  const val = document.querySelector("input[name='att']:checked")?.value;
+document.querySelector(".okBtn").onclick=()=>{
+  const val=document.querySelector("input[name='att']:checked")?.value;
   if(val) attendance[selectedDate]=val;
   else delete attendance[selectedDate];
-  localStorage.setItem(attendanceKey,JSON.stringify(attendance));
-  location.reload();
+  localStorage.setItem(storageKey,JSON.stringify(attendance));
+  document.getElementById("dialog").style.display="none";
+  renderCalendar();
 };
-  */document.querySelector(".okBtn").onclick = () => {
-  const val = document.querySelector("input[name='att']:checked")?.value;
 
-  // 1️⃣ Local save (tumhara existing behaviour)
-  if (val) attendance[selectedDate] = val;
-  else delete attendance[selectedDate];
-
-  localStorage.setItem(attendanceKey, JSON.stringify(attendance));
-
-  // 2️⃣ Google Sheet ko bhejna
-  fetch(SHEET_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      worker: worker,
-      date: selectedDate,
-      status: val || ""
-    })
-  }).then(() => {
-    console.log("Sheet updated");
-  }).catch(err => {
-    console.error("Sheet error", err);
-  });
-
-  // 3️⃣ Dialog close + refresh
-  dialog.style.display = "none";
-  location.reload();
-};
-  
-  
-  
-  
-  
-  
-  
+renderCalendar();
 </script>
 
 </body>
